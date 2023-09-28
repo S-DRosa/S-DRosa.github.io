@@ -46,13 +46,17 @@
         </div>
         <div id="profile1" onload="initialLoad()">
             <h1 id="profile1Name"></h1>
-            <h3 id="profile1FavFood"></h1>
-            <h3 id="profile1FavColor"></h1>
+            <h3 id="profile1DOB"></h3>
+            <h3 id="profile1FavFood"></h3>
+            <h3 id="profile1FavColor"></h3> <br>
+            <img id="profile1Img" src="" width="200px" height="150px">
         </div>
         <div id="profile2">
             <h1 id="profile2Name"></h1>
-            <h3 id="profile2FavFood"></h1>
-            <h3 id="profile2FavColor"></h1>
+            <h3 id="profile2DOB"></h3>
+            <h3 id="profile2FavFood"></h3>
+            <h3 id="profile2FavColor"></h3> <br>
+            <img id="profile2Img" src="" width="200px" height="150px">
         </div>
         <div id="thunkableApp">
             <br><br>
@@ -104,12 +108,19 @@
         var findID = document.querySelector("#findID");
         var findName = document.querySelector("#findName");
         var findAge = document.querySelector("#findAge");
+
         var profile1Name = document.querySelector("#profile1Name")
+        var profile1DOB = document.querySelector("#profile1DOB")
         var profile1FavFood = document.querySelector("#profile1FavFood")
         var profile1FavColor = document.querySelector("#profile1FavColor")
+        var profile1Img = document.querySelector("#profile1Img")
+
+
         var profile2Name = document.querySelector("#profile2Name")
+        var profile2DOB = document.querySelector("#profile2DOB")
         var profile2FavFood = document.querySelector("#profile2FavFood")
         var profile2FavColor = document.querySelector("#profile2FavColor")
+        var profile2Img = document.querySelector("#profile2Img")
       
 
         var insertBtn = document.querySelector("#insert");
@@ -124,9 +135,11 @@
             get(child(dbref, "Hwl6JEF3o1NZFZdsrazutxcgFUl2/"))
             .then((snapshot)=>{
                 if(snapshot.exists()){
-                    profile1Name.innerHTML = "Name: " + snapshot.val().name;
+                    profile1Name.innerHTML = snapshot.val().name + " Profile";
                     profile1FavFood.innerHTML = "Favorite Food: " + snapshot.val().favoriteFood;
                     profile1FavColor.innerHTML = "Favorite Color: " + snapshot.val().favoriteColor;
+                    profile1Img.src = snapshot.val().image;
+                    profile1DOB.innerHTML = "DOB: " + snapshot.val().dateOfBirth;
                 } else {
                     alert("No data found");
                 }
@@ -137,9 +150,11 @@
             get(child(dbref, "iuOL9tCtIjfo97DGvmQHkqrLyHI2/"))
             .then((snapshot)=>{
                 if(snapshot.exists()){
-                    profile2Name.innerHTML = "Name: " + snapshot.val().name;
+                    profile2Name.innerHTML = snapshot.val().name + " Profile";
                     profile2FavFood.innerHTML = "Favorite Food: " + snapshot.val().favoriteFood;
                     profile2FavColor.innerHTML = "Favorite Color: " + snapshot.val().favoriteColor;
+                    profile2Img.src = snapshot.val().image;
+                    profile2DOB.innerHTML = "DOB: " + snapshot.val().dateOfBirth;
                 } else {
                     alert("No data found");
                 }
@@ -150,7 +165,7 @@
         }
 
         function InsertData() {
-            set(ref(db, "People/"+ enterID.value),{
+            set(ref(db, enterID.value),{
                 Name: enterName.value,
                 ID: enterID.value,
                 Age: enterAge.value
@@ -166,7 +181,7 @@
         function FindData() {
             const dbref = ref(db);
 
-            get(child(dbref, "People/" + findID.value))
+            get(child(dbref, findID.value))
             .then((snapshot)=>{
                 if(snapshot.exists()){
                     findName.innerHTML = "Name: " + snapshot.val().Name;
@@ -182,7 +197,7 @@
         }
 
         function UpdateData(){
-            update(ref(db, "People/"+ enterID.value),{
+            update(ref(db, enterID.value),{
                 Name: enterName.value,
                 Age: enterAge.value
             })
@@ -195,7 +210,7 @@
         }
 
         function RemoveData(){
-            remove(ref(db, "People/"+ enterID.value))
+            remove(ref(db, enterID.value))
             .then(()=>{
                 alert("Data deleted successfully");
             })
